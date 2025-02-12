@@ -3,7 +3,7 @@ import banner from '../../images/product-slide-1.jpg';
 
 const Header = () => {
     return (
-        <header className="bg-white shadow-md p-4">
+        <header className="bg-white  p-4">
             <div className="container mx-auto flex justify-between items-center mb-8">
                 {/* Logo */}
                 <div className="text-2xl font-bold">
@@ -20,7 +20,7 @@ const Header = () => {
             </div>
 
             {/* Navbar */}
-            <nav className="mt-13 mb-8">
+            <nav className="mt-15 mb-25 ml-15">
                 <ul className="flex flex-col items-center space-y-8">
                     <li><a href="/" className="text-2xl">Home</a></li>
                     <li><a href="/product" className="text-2xl">Product</a></li>
@@ -30,7 +30,7 @@ const Header = () => {
             </nav>
 
             {/* Banner Image with Overlay and Navigation Arrows */}
-            <div className="relative w-[412px] h-[753px] mt-8 ml-[-16px]">
+            <div className="relative w-[412px] h-[753px] mt-8 ml-[-16px] mr-[-16px]">
                 <img
                     src={banner}
                     alt="Banner"
@@ -44,12 +44,12 @@ const Header = () => {
                 </div>
 
                 {/* Left Arrow */}
-                <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 m-4 rounded-full focus:outline-none">
+                <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 rounded-full focus:outline-none">
                     <i className="icon-left-arrow" />
                 </button>
 
-                {/* Right Arrow */}
-                <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 m-4 rounded-full focus:outline-none">
+                {/* Right Arrow - m-4 kaldırıldı */}
+                <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-2 rounded-full focus:outline-none">
                     <i className="icon-right-arrow" />
                 </button>
             </div>
