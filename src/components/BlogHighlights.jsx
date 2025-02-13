@@ -33,7 +33,7 @@ const BlogHighlights = () => {
     ];
 
     return (
-        <div className="p-4 flex flex-col items-center gap-8">
+        <div className="p-25 flex flex-col items-center gap-8">
             {/* Üst Başlık */}
             <div className="text-center">
                 <h1 className="mt-2 text-3xl font-bold">BLOG HIGHLIGHTS</h1>
@@ -42,7 +42,7 @@ const BlogHighlights = () => {
                 </p>
             </div>
             {/* Blog Card'lar */}
-            <div className="grid grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {posts.map(post => (
                     <BlogCard
                         key={post.id}

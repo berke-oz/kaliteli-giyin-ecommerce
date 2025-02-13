@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Carousel = () => {
-    const imageUrl = 'https://picsum.photos/1230/414?random=3'; // Örnek görsel
+    const images = [
+        'https://picsum.photos/1440/682?random=1',
+        'https://picsum.photos/1440/682?random=2',
+        'https://picsum.photos/1440/682?random=3'
+    ];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handlePrevClick = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    };
+
+    const handleNextClick = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+    };
 
     return (
-        <div className="relative w-[414px] h-[1230px] overflow-hidden">
+        <div className="relative w-full h-[414px] md:w-[1520px] md:h-[682px] overflow-hidden mx-auto">
             <img
-                src={imageUrl}
+                src={images[currentIndex]}
                 alt="Carousel"
                 className="w-full h-full object-cover"
             />
@@ -26,17 +39,26 @@ const Carousel = () => {
                 </div>
             </div>
             {/* Navigation Arrows */}
-            <button className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl">
+            <button
+                onClick={handlePrevClick}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl"
+            >
                 &#8249;
             </button>
-            <button className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl">
+            <button
+                onClick={handleNextClick}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl"
+            >
                 &#8250;
             </button>
             {/* Pagination Dots */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-                <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-                <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+                {images.map((_, index) => (
+                    <div
+                        key={index}
+                        className={`w-3 h-3 rounded-full ${index === currentIndex ? 'bg-white' : 'bg-gray-400'}`}
+                    ></div>
+                ))}
             </div>
         </div>
     );
