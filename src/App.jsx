@@ -1,25 +1,16 @@
-import './App.css'
-import BlogHighlights from './components/BlogHighlights';
-import Carousel from './components/Carousel';
-import EditorsPicks from './components/EditorsPicks';
-import FeaturedProducts from './components/FeaturedProducts';
-import InfoContainer from './components/InfoContainer';
-import Footer from './components/layout/Footer';
-import Header from './components/layout/Header';
-import './index.css'
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import HomePage from './components/pages/HomePage';
 
-function App() {
+
+const App = () => {
   return (
-    <>
-      <Header />
-      <EditorsPicks />
-      <FeaturedProducts />
-      <Carousel />
-      <InfoContainer />
-      <BlogHighlights />
-      <Footer />
-    </>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;
