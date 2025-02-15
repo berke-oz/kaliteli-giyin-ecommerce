@@ -1,9 +1,10 @@
-import BlogHighlights from "../BlogHighlights";
-import Carousel from "../Carousel";
-import EditorsPicks from "../EditorsPicks";
-import FeaturedProducts from "../FeaturedProducts";
-import HomeBanner from "../HomeBanner";
-import InfoContainer from "../InfoContainer";
+
+import BlogHighlights from "../HomePageComponents/BlogHighlights";
+import Carousel from "../HomePageComponents/Carousel";
+import EditorsPicks from "../HomePageComponents/EditorsPicks";
+import FeaturedProducts from "../HomePageComponents/FeaturedProducts";
+import HomeBanner from "../HomePageComponents/HomeBanner";
+import InfoContainer from "../HomePageComponents/InfoContainer";
 import Layout from "../layout/Layout";
 
 const HomePage = () => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import BlogCard from './BlogCard';
 
+
 const BlogHighlights = () => {
     const posts = [
         {
