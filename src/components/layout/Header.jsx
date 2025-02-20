@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Phone, Mail, Instagram, Youtube, Facebook, Twitter, Search, ShoppingCart, Heart } from 'lucide-react';
+import Gravatar from 'react-gravatar';
+import { logoutUser } from '../../actions/clientActions';
 
 const Header = () => {
     const banners = [
@@ -15,6 +18,13 @@ const Header = () => {
 
     const handleNextClick = () => {
         setCurrentIndex((prevIndex) => (prevIndex === banners.length - 1 ? 0 : prevIndex + 1));
+    };
+
+    const user = useSelector((state) => state.client.user);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
     };
 
     return (
@@ -51,7 +61,15 @@ const Header = () => {
                     <a href="/pages" className="text-base">Pages</a>
                 </nav>
                 <div className="flex items-center space-x-4">
-                    <a href="/login" className="text-base text-[#23A6F0]">Login / Register</a>
+                    {user.email ? (
+                        <div className="flex items-center space-x-2">
+                            <Gravatar email={user.email} size={40} className="rounded-full" />
+                            <span>{user.email}</span>
+                            <button onClick={handleLogout} className="text-base text-[#23A6F0]">Logout</button>
+                        </div>
+                    ) : (
+                        <a href="/login" className="text-base text-[#23A6F0]">Login / Register</a>
+                    )}
                     <a href="#"><Search className="w-5 h-5" /></a>
                     <a href="#"><ShoppingCart className="w-5 h-5" /></a>
                     <a href="#"><Heart className="w-5 h-5" /></a>
@@ -82,8 +100,6 @@ const Header = () => {
                     <li><a href="/contact" className="text-2xl">Contact</a></li>
                 </ul>
             </nav>
-
-
         </header>
     );
 };
