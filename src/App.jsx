@@ -5,6 +5,7 @@ import HomePage from './components/pages/HomePage';
 import ShopPage from './components/pages/ShopPage';
 import SignUpPage from './components/pages/SignUpPage';
 import LoginFormPage from './components/pages/LoginFormPage';
+import Header from './components/layout/Header';
 import { loadUserFromLocalStorage } from './actions/clientActions';
 
 const App = () => {
@@ -16,7 +17,6 @@ const App = () => {
 
   return (
     <Router>
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
