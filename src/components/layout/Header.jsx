@@ -1,15 +1,41 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Phone, Mail, Instagram, Youtube, Facebook, Twitter, Search, ShoppingCart, Heart } from 'lucide-react';
-import Gravatar from 'react-gravatar';
-import { logoutUser } from '../../actions/clientActions';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    Phone,
+    Mail,
+    Instagram,
+    Youtube,
+    Facebook,
+    Twitter,
+    Search,
+    ShoppingCart,
+    Heart,
+} from "lucide-react";
+import Gravatar from "react-gravatar";
+import { logoutUser } from "../../actions/clientActions";
+import { Link } from "react-router-dom";
+import CategoryList from "../CategoryList";
+import { fetchCategories } from "../../actions/categoryActions";
 
 const Header = () => {
     const user = useSelector((state) => state.client.user);
     const dispatch = useDispatch();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(fetchCategories());
+    }, [dispatch]);
 
     const handleLogout = () => {
         dispatch(logoutUser());
+    };
+
+    const handleMouseEnter = () => {
+        setIsDropdownOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsDropdownOpen(false);
     };
 
     return (
@@ -39,7 +65,21 @@ const Header = () => {
                 </div>
                 <nav className="flex space-x-10">
                     <a href="/" className="text-base">Home</a>
-                    <a href="/shop" className="text-base">Shop</a>
+                    <div
+                        className="relative group"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <Link to="/shop" className="text-base cursor-pointer">Shop</Link>
+                        <div
+                            className={`absolute bg-white shadow-lg mt-2 top-full left-0 w-60 z-50 border rounded transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                                }`}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <CategoryList />
+                        </div>
+                    </div>
                     <a href="/about" className="text-base">About</a>
                     <a href="/blog" className="text-base">Blog</a>
                     <a href="/contact" className="text-base">Contact</a>

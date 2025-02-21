@@ -6,6 +6,8 @@ import ShopPage from './components/pages/ShopPage';
 import SignUpPage from './components/pages/SignUpPage';
 import LoginFormPage from './components/pages/LoginFormPage';
 import Header from './components/layout/Header';
+import CategoryList from './components/CategoryList';
+import TopCategories from './components/TopCategories';
 import { loadUserFromStorage } from './actions/clientActions';
 
 const App = () => {
@@ -23,6 +25,7 @@ const App = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginFormPage />} />
       </Routes>
+
     </Router>
   );
 };
