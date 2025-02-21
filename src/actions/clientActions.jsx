@@ -49,27 +49,46 @@ export const loginUser = (data) => {
             const user = response.data;
             dispatch(setUser(user));
 
+            sessionStorage.setItem('user', JSON.stringify(user));
             if (data.rememberMe) {
-                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('token', user.token);
             }
+            api.defaults.headers.common['Authorization'] = user.token;
         } catch (error) {
             throw new Error('Login failed');
         }
     };
 };
 
-export const loadUserFromLocalStorage = () => {
-    return (dispatch) => {
-        const user = localStorage.getItem('user');
+export const loadUserFromStorage = () => {
+    return async (dispatch) => {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(sessionStorage.getItem('user'));
         if (user) {
-            dispatch(setUser(JSON.parse(user)));
+            dispatch(setUser(user));
+            api.defaults.headers.common['Authorization'] = user.token;
+        } else if (token) {
+            api.defaults.headers.common['Authorization'] = token;
+            try {
+                const response = await api.get('/verify');
+                const user = response.data;
+                dispatch(setUser(user));
+                sessionStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('token', user.token);
+                api.defaults.headers.common['Authorization'] = user.token;
+            } catch (error) {
+                localStorage.removeItem('token');
+                delete api.defaults.headers.common['Authorization'];
+            }
         }
     };
 };
 
 export const logoutUser = () => {
     return (dispatch) => {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        localStorage.removeItem('token');
+        delete api.defaults.headers.common['Authorization'];
         dispatch(setUser({}));
     };
 };

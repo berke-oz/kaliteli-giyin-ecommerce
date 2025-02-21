@@ -14,7 +14,7 @@ const LoginForm = () => {
     const onSubmit = async (data) => {
         try {
             await dispatch(loginUser(data));
-            navigate(-1); // Önceki sayfaya yönlendir
+            navigate('/'); // Ana sayfaya yönlendir
         } catch (error) {
             toast.error('Login failed. Please check your credentials.');
         }

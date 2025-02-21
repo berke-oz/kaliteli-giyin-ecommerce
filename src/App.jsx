@@ -6,13 +6,13 @@ import ShopPage from './components/pages/ShopPage';
 import SignUpPage from './components/pages/SignUpPage';
 import LoginFormPage from './components/pages/LoginFormPage';
 import Header from './components/layout/Header';
-import { loadUserFromLocalStorage } from './actions/clientActions';
+import { loadUserFromStorage } from './actions/clientActions';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadUserFromLocalStorage());
+    dispatch(loadUserFromStorage());
   }, [dispatch]);
 
   return (
