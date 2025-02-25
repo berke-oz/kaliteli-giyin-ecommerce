@@ -15,7 +15,7 @@ const ShopProductCard = ({ image, title, description, price }) => (
             <h2 className="font-bold text-xl">{title}</h2>
             <p className="mt-2 text-sm">{description}</p>
             <div className="mt-2">
-                <span className="text-lg font-bold text-[#23856D]">{price} TL</span>
+                <span className="text-lg font-bold text-[#23856D]">{price} $</span>
             </div>
         </div>
     </div>
@@ -39,25 +39,9 @@ const ShopProductCards = () => {
 
     // Sayfa değiştirme işleyicisi
     const handlePageChange = (newPage) => {
-        if (!gender || !categoryName || !categoryId) {
-            console.error('Route parameters missing:', { gender, categoryName, categoryId });
-            return;
-        }
+        setCurrentPage(newPage); // URL'yi değiştirmiyoruz
 
-        setCurrentPage(newPage);
         const offset = (newPage - 1) * productsPerPage;
-
-        // URL parametrelerini güncelle
-        const params = new URLSearchParams();
-        if (sort) params.set('sort', sort);
-        if (filter) params.set('filter', filter);
-        params.set('page', newPage.toString());
-
-        // URL'yi güncelle
-        const basePath = `/shop/${gender}/${categoryName}/${categoryId}`;
-        const newUrl = `${basePath}?${params.toString()}`;
-
-        navigate(newUrl, { replace: true });
 
         // Yeni sayfanın ürünlerini getir
         dispatch(fetchProducts(categoryId, sort, filter, productsPerPage, offset));
@@ -66,7 +50,7 @@ const ShopProductCards = () => {
     // İlk yükleme ve URL değişiklikleri için
     useEffect(() => {
         if (!gender || !categoryName || !categoryId) {
-            console.error('Route parameters missing on load');
+            console.error('Route parametreleri eksik');
             return;
         }
 
@@ -141,7 +125,7 @@ const ShopProductCards = () => {
                             disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={currentPage >= totalPages || loading}
                     >
-                        İleri
+                        Sonraki
                     </button>
                 </div>
             )}

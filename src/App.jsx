@@ -7,6 +7,7 @@ import SignUpPage from './components/pages/SignUpPage';
 import LoginFormPage from './components/pages/LoginFormPage';
 
 import { loadUserFromStorage } from './actions/clientActions';
+import ShopProductCards from './components/ShopPageComponents/ShopProductCard';
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginFormPage />} />
+        <Route path="/shop/:gender/:categoryName/:categoryId" element={<ShopProductCards />} />
 
       </Routes>
 
