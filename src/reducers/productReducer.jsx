@@ -14,23 +14,23 @@ const productReducer = (state = initialState, action) => {
                 error: null
             };
         case 'FETCH_PRODUCTS_SUCCESS':
-            console.log('FETCH_PRODUCTS_SUCCESS action payload:', action.payload); // Burada payload'ı kontrol edebilirsiniz
             return {
                 ...state,
                 loading: false,
                 products: action.payload.products,
-                total: action.payload.total
+                total: action.payload.total,
+                error: null
             };
         case 'FETCH_PRODUCTS_FAILURE':
             return {
                 ...state,
                 loading: false,
+                products: [],
                 error: action.payload
             };
         default:
             return state;
     }
 };
-
 
 export default productReducer;
