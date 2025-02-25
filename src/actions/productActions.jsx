@@ -1,34 +1,30 @@
-export const setCategories = (categories) => ({
-    type: 'SET_CATEGORIES',
-    payload: categories,
-});
+import api from "../services/api";
 
-export const setProductList = (productList) => ({
-    type: 'SET_PRODUCT_LIST',
-    payload: productList,
-});
 
-export const setTotal = (total) => ({
-    type: 'SET_TOTAL',
-    payload: total,
-});
+export const fetchProducts = () => async (dispatch) => {
+    dispatch({ type: 'FETCH_PRODUCTS_START' });
 
-export const setFetchState = (fetchState) => ({
-    type: 'SET_FETCH_STATE',
-    payload: fetchState,
-});
+    try {
+        // Use the api instance from api.js
+        const response = await api.get('/products');
+        console.log('API Response:', response.data);
 
-export const setLimit = (limit) => ({
-    type: 'SET_LIMIT',
-    payload: limit,
-});
-
-export const setOffset = (offset) => ({
-    type: 'SET_OFFSET',
-    payload: offset,
-});
-
-export const setFilter = (filter) => ({
-    type: 'SET_FILTER',
-    payload: filter,
-});
+        if (response.data && Array.isArray(response.data.products)) {
+            dispatch({
+                type: 'FETCH_PRODUCTS_SUCCESS',
+                payload: {
+                    products: response.data.products,
+                    total: response.data.total
+                }
+            });
+        } else {
+            throw new Error('Invalid API response format');
+        }
+    } catch (error) {
+        console.error('API Fetch Error:', error);
+        dispatch({
+            type: 'FETCH_PRODUCTS_FAILURE',
+            payload: error.message
+        });
+    }
+};

@@ -10,44 +10,7 @@ const ShopCards = () => {
         { id: 5, title: 'CLOTHS', items: 5 },
     ];
 
-    const products = [
-        {
-            id: 1,
-            image: 'https://picsum.photos/240/427?random=1',
-            title: 'Product 1',
-            description: 'Description for product 1',
-            oldPrice: '$100',
-            newPrice: '$80',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 2,
-            image: 'https://picsum.photos/240/427?random=2',
-            title: 'Product 2',
-            description: 'Description for product 2',
-            oldPrice: '$120',
-            newPrice: '$90',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 3,
-            image: 'https://picsum.photos/240/427?random=3',
-            title: 'Product 2',
-            description: 'Description for product 2',
-            oldPrice: '$120',
-            newPrice: '$90',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 4,
-            image: 'https://picsum.photos/240/427?random=4',
-            title: 'Product 2',
-            description: 'Description for product 2',
-            oldPrice: '$120',
-            newPrice: '$90',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-    ];
+
 
     return (
         <div className="p-8">

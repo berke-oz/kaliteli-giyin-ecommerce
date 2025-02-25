@@ -10,6 +10,7 @@ import CategoryList from './components/CategoryList';
 import TopCategories from './components/TopCategories';
 import { loadUserFromStorage } from './actions/clientActions';
 
+
 const App = () => {
   const dispatch = useDispatch();
 

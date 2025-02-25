@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../actions/productActions';
 
-const ShopProductCard = ({ image, title, description, oldPrice, newPrice, colors }) => (
+const ShopProductCard = ({ image, title, description, price }) => (
     <div className="w-[238px] h-[484px] p-4 flex flex-col">
         <img
             src={image}
@@ -10,184 +12,83 @@ const ShopProductCard = ({ image, title, description, oldPrice, newPrice, colors
         <div className="mt-4 flex flex-col flex-1 items-center text-center">
             <h2 className="font-bold text-xl">{title}</h2>
             <p className="mt-2 text-sm">{description}</p>
-            <div className="mt-2 flex items-center gap-2">
-                <span className="text-lg line-through text-[#BDBDBD]">{oldPrice}</span>
-                <span className="text-lg font-bold text-[#23856D]">{newPrice}</span>
-            </div>
-            <div className="mt-auto flex gap-2 justify-center">
-                {colors.map((color, index) => (
-                    <div
-                        key={index}
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: color }}
-                    ></div>
-                ))}
+            <div className="mt-2">
+                <span className="text-lg font-bold text-[#23856D]">${price}</span>
             </div>
         </div>
     </div>
 );
 
+// ...existing code...
+
 const ShopProductCards = () => {
-    const products = [
-        {
-            id: 1,
-            image: 'https://picsum.photos/239/300?random=1',
-            title: 'Product 1',
-            description: 'Description for product 1',
-            oldPrice: '$100',
-            newPrice: '$80',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 2,
-            image: 'https://picsum.photos/239/300?random=2',
-            title: 'Product 2',
-            description: 'Description for product 2',
-            oldPrice: '$120',
-            newPrice: '$90',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 3,
-            image: 'https://picsum.photos/239/300?random=3',
-            title: 'Product 3',
-            description: 'Description for product 3',
-            oldPrice: '$130',
-            newPrice: '$100',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 4,
-            image: 'https://picsum.photos/239/300?random=4',
-            title: 'Product 4',
-            description: 'Description for product 4',
-            oldPrice: '$140',
-            newPrice: '$110',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 5,
-            image: 'https://picsum.photos/239/300?random=5',
-            title: 'Product 5',
-            description: 'Description for product 5',
-            oldPrice: '$150',
-            newPrice: '$120',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 6,
-            image: 'https://picsum.photos/239/300?random=6',
-            title: 'Product 6',
-            description: 'Description for product 6',
-            oldPrice: '$160',
-            newPrice: '$130',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 7,
-            image: 'https://picsum.photos/239/300?random=7',
-            title: 'Product 7',
-            description: 'Description for product 7',
-            oldPrice: '$170',
-            newPrice: '$140',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 8,
-            image: 'https://picsum.photos/239/300?random=8',
-            title: 'Product 8',
-            description: 'Description for product 8',
-            oldPrice: '$180',
-            newPrice: '$150',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 9,
-            image: 'https://picsum.photos/239/300?random=9',
-            title: 'Product 9',
-            description: 'Description for product 9',
-            oldPrice: '$190',
-            newPrice: '$160',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 10,
-            image: 'https://picsum.photos/239/300?random=10',
-            title: 'Product 10',
-            description: 'Description for product 10',
-            oldPrice: '$200',
-            newPrice: '$170',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 11,
-            image: 'https://picsum.photos/239/300?random=11',
-            title: 'Product 11',
-            description: 'Description for product 11',
-            oldPrice: '$210',
-            newPrice: '$180',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-        {
-            id: 12,
-            image: 'https://picsum.photos/239/300?random=12',
-            title: 'Product 12',
-            description: 'Description for product 12',
-            oldPrice: '$220',
-            newPrice: '$190',
-            colors: ['#FF0000', '#00FF00', '#0000FF'],
-        },
-    ];
+    const dispatch = useDispatch();
+    const { products, loading, error } = useSelector(state => state.product);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 8;
+
+    useEffect(() => {
+        dispatch(fetchProducts());
+    }, [dispatch]);
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct) || [];
+    const totalPages = Math.ceil((products?.length || 0) / productsPerPage);
+
+    const handleFirstPage = () => setCurrentPage(1);
+    const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(prev => prev + 1);
+        }
+    };
+
+    // ...existing loading and error handling...
 
     return (
         <>
             <div className="flex justify-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[48px] mt-8">
-                    {products.slice(0, 4).map(product => (
+                    {currentProducts.map(product => (
                         <ShopProductCard
                             key={product.id}
-                            image={product.image}
-                            title={product.title}
+                            image={product.images[0].url}
+                            title={product.name}
                             description={product.description}
-                            oldPrice={product.oldPrice}
-                            newPrice={product.newPrice}
-                            colors={product.colors}
+                            price={product.price}
                         />
                     ))}
                 </div>
             </div>
-            <div className="hidden md:flex justify-center">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[48px] mt-8">
-                    {products.slice(4, 12).map(product => (
-                        <ShopProductCard
-                            key={product.id}
-                            image={product.image}
-                            title={product.title}
-                            description={product.description}
-                            oldPrice={product.oldPrice}
-                            newPrice={product.newPrice}
-                            colors={product.colors}
-                        />
+            {products?.length > productsPerPage && (
+                <div className="flex justify-center items-center pt-15">
+                    <button
+                        onClick={handleFirstPage}
+                        className="w-[83px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white"
+                        disabled={currentPage === 1}
+                    >
+                        First
+                    </button>
+                    {[1, 2, 3].map((pageNum) => (
+                        <button
+                            key={pageNum}
+                            onClick={() => handlePageClick(pageNum)}
+                            className={`w-[49px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white ${currentPage === pageNum ? 'bg-[#23A6F0] text-white' : ''
+                                }`}
+                        >
+                            {pageNum}
+                        </button>
                     ))}
+                    <button
+                        onClick={handleNextPage}
+                        className="w-[85px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white"
+                        disabled={currentPage >= totalPages}
+                    >
+                        Next
+                    </button>
                 </div>
-            </div>
-            <div className="flex justify-center items-center pt-15">
-                <button className="w-[83px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white">
-                    First
-                </button>
-                <button className="w-[49px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white">
-                    1
-                </button>
-                <button className="w-[49px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white">
-                    2
-                </button>
-                <button className="w-[49px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white">
-                    3
-                </button>
-                <button className="w-[85px] h-[74px] border border-gray-300 rounded hover:bg-[#23A6F0] hover:text-white">
-                    Next
-                </button>
-            </div>
+            )}
         </>
     );
 };
