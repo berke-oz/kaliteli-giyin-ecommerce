@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchProducts } from '../../actions/productActions';
 
 // Product Card Component
@@ -26,40 +26,60 @@ const ShopProductCards = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const { gender, categoryName, categoryId } = useParams();
 
     const { products, total, loading, error } = useSelector(state => state.product);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 25;
+    const totalPages = Math.ceil(total / productsPerPage);
 
-    // URL'den mevcut parametreleri al
-    const queryParams = new URLSearchParams(location.search);
-    const [sort, setSort] = useState(queryParams.get('sort') || '');
-    const [filter, setFilter] = useState(queryParams.get('filter') || '');
+    // URL'den sayfa parametresini al
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const page = parseInt(queryParams.get('page')) || 1;
+        const filter = queryParams.get('filter') || '';
+        const sort = queryParams.get('sort') || '';
+
+        setCurrentPage(page);
+        // fetch ürünler (filter ve sort ile)
+        dispatch(fetchProducts(null, sort, filter, productsPerPage, (page - 1) * productsPerPage));
+    }, [location.search, dispatch]);
 
     // Sayfa değiştirme işleyicisi
     const handlePageChange = (newPage) => {
-        setCurrentPage(newPage); // URL'yi değiştirmiyoruz
+        setCurrentPage(newPage);
+        const queryParams = new URLSearchParams(location.search);
+        queryParams.set('page', newPage);
 
-        const offset = (newPage - 1) * productsPerPage;
+        // URL'yi güncelle
+        navigate({
+            pathname: location.pathname,
+            search: `?${queryParams.toString()}` // Mevcut parametreler ile yeni URL'yi oluştur
+        });
 
-        // Yeni sayfanın ürünlerini getir
-        dispatch(fetchProducts(categoryId, sort, filter, productsPerPage, offset));
+        dispatch(fetchProducts(null, null, null, productsPerPage, (newPage - 1) * productsPerPage));
     };
 
-    // İlk yükleme ve URL değişiklikleri için
-    useEffect(() => {
-        if (!gender || !categoryName || !categoryId) {
-            console.error('Route parametreleri eksik');
-            return;
+    // Sayfa butonları aralığını hesapla
+    const getPageButtons = () => {
+        const pageNumbers = [];
+        const maxButtons = 3;
+
+        let startPage = Math.max(1, currentPage - 1);
+        let endPage = Math.min(totalPages, currentPage + 1);
+
+        if (currentPage === 1 || currentPage === 2) {
+            endPage = Math.min(totalPages, maxButtons);
         }
 
-        const page = parseInt(queryParams.get('page')) || 1;
-        setCurrentPage(page);
+        if (currentPage === totalPages || currentPage === totalPages - 1) {
+            startPage = Math.max(1, totalPages - maxButtons + 1);
+        }
 
-        const offset = (page - 1) * productsPerPage;
-        dispatch(fetchProducts(categoryId, sort, filter, productsPerPage, offset));
-    }, [location.search, categoryId, gender, categoryName, dispatch]);
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
 
     if (loading) {
         return (
@@ -76,8 +96,6 @@ const ShopProductCards = () => {
             </div>
         );
     }
-
-    const totalPages = Math.ceil(total / productsPerPage);
 
     return (
         <>
@@ -106,16 +124,16 @@ const ShopProductCards = () => {
                         İlk
                     </button>
 
-                    {Array.from({ length: Math.min(3, totalPages) }, (_, i) => (
+                    {getPageButtons().map((page) => (
                         <button
-                            key={i + 1}
-                            onClick={() => handlePageChange(i + 1)}
+                            key={page}
+                            onClick={() => handlePageChange(page)}
                             className={`w-[49px] h-[74px] border border-gray-300 rounded 
                                 hover:bg-[#23A6F0] hover:text-white disabled:opacity-50 
-                                ${currentPage === i + 1 ? 'bg-[#23A6F0] text-white' : ''}`}
+                                ${currentPage === page ? 'bg-[#23A6F0] text-white' : ''}`}
                             disabled={loading}
                         >
-                            {i + 1}
+                            {page}
                         </button>
                     ))}
 

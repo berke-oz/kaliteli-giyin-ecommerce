@@ -25,11 +25,12 @@ const FilterShopPage = () => {
     }, [dispatch, categoryId, sort, filter]);
 
     // URL'yi güncelle
-    const updateURL = (newSort, newFilter) => {
+    const updateURL = (newSort, newFilter, page = 1) => {
         const searchParams = new URLSearchParams();
         if (categoryId) searchParams.set('category', categoryId);
         if (newFilter) searchParams.set('filter', newFilter);
         if (newSort) searchParams.set('sort', newSort);
+        searchParams.set('page', page);  // Sayfa parametresini ekle
 
         navigate(`?${searchParams.toString()}`, { replace: true }); // URL'yi günceller
     };
