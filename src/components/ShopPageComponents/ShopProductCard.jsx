@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchProducts } from '../../actions/productActions';
+import { Link } from 'react-router-dom';
 
 // Product Card Component
-const ShopProductCard = ({ image, title, description, price }) => (
-    <div className="w-[238px] h-[484px] p-4 flex flex-col">
+const ShopProductCard = ({ id, image, title, description, price }) => (
+    <Link to={`/product/${id}`} className="w-[238px] h-[484px] p-4 flex flex-col">
         <img
             src={image}
             alt={title}
@@ -18,7 +19,7 @@ const ShopProductCard = ({ image, title, description, price }) => (
                 <span className="text-lg font-bold text-[#23856D]">{price} $</span>
             </div>
         </div>
-    </div>
+    </Link>
 );
 
 // Main Component
@@ -104,6 +105,7 @@ const ShopProductCards = () => {
                     {products?.map(product => (
                         <ShopProductCard
                             key={product.id}
+                            id={product.id} // Pass the product ID to the card
                             image={product.images[0].url}
                             title={product.name}
                             description={product.description}

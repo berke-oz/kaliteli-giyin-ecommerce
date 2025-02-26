@@ -2,7 +2,8 @@ const initialState = {
     products: [],
     total: 0,
     loading: false,
-    error: null
+    error: null,
+    product: null // Tek bir ürünün detayları
 };
 
 const productReducer = (state = initialState, action) => {
@@ -28,6 +29,29 @@ const productReducer = (state = initialState, action) => {
                 products: [],
                 error: action.payload
             };
+
+        // Tek bir ürünün detaylarını almak için
+        case 'FETCH_PRODUCT_START':
+            return {
+                ...state,
+                loading: true,
+                error: null
+            };
+        case 'FETCH_PRODUCT_SUCCESS':
+            return {
+                ...state,
+                loading: false,
+                product: action.payload, // API'den gelen ürün detaylarını kaydet
+                error: null
+            };
+        case 'FETCH_PRODUCT_FAILURE':
+            return {
+                ...state,
+                loading: false,
+                product: null,
+                error: action.payload
+            };
+
         default:
             return state;
     }

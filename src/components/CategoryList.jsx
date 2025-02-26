@@ -16,26 +16,32 @@ const CategoryList = () => {
     const menCategories = categories.filter(category => category.gender === "e");
 
     return (
-        <div>
-            <div className="flex">
-                <div className="w-1/2">
-                    <h3 className="text-lg font-bold text-gray-700">Kadın</h3>
-                    <ul className="py-2">
+        <div className="p-4 bg-white">
+            <div className="grid grid-cols-2 gap-4">
+                <div className="pl-6">
+                    <h3 className="font-bold text-[#252B42] text-base mb-3">Kadın</h3>
+                    <ul className="space-y-3">
                         {womenCategories.map(category => (
-                            <li key={category.id} className="px-4 py-2 hover:bg-gray-100">
-                                <Link to={`/shop/k/${category.title}/${category.id}`}>
+                            <li key={category.id} className="pl-2">
+                                <Link
+                                    to={`/shop/k/${category.title}/${category.id}`}
+                                    className="text-[#737373] hover:text-[#252B42] text-sm"
+                                >
                                     {category.title}
                                 </Link>
                             </li>
                         ))}
                     </ul>
                 </div>
-                <div className="w-1/2">
-                    <h3 className="text-lg font-bold text-gray-700">Erkek</h3>
-                    <ul className="py-2">
+                <div className="pl-6">
+                    <h3 className="font-bold text-[#252B42] text-base mb-3">Erkek</h3>
+                    <ul className="space-y-3">
                         {menCategories.map(category => (
-                            <li key={category.id} className="px-4 py-2 hover:bg-gray-100">
-                                <Link to={`/shop/e/${category.title}/${category.id}`}>
+                            <li key={category.id} className="pl-2">
+                                <Link
+                                    to={`/shop/e/${category.title}/${category.id}`}
+                                    className="text-[#737373] hover:text-[#252B42] text-sm"
+                                >
                                     {category.title}
                                 </Link>
                             </li>

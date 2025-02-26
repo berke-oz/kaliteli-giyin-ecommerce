@@ -8,6 +8,8 @@ import LoginFormPage from './components/pages/LoginFormPage';
 
 import { loadUserFromStorage } from './actions/clientActions';
 import ShopProductCards from './components/ShopPageComponents/ShopProductCard';
+import ProductDetailPage from './components/pages/ProductDetailPage';
+import ProductDetail from './components/ProductDetail';
 
 
 const App = () => {
@@ -25,6 +27,7 @@ const App = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/shop/:gender/:categoryName/:categoryId" element={<ShopProductCards />} />
+        <Route path="/product/:productId" element={<ProductDetailPage />} />
 
       </Routes>
 
