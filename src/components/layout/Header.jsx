@@ -43,7 +43,7 @@ const Header = () => {
         <header className="bg-white w-full">
             {/* Top Bar */}
             <div className="bg-[#252B42] text-white">
-                <div className="max-w-[1440px] mx-auto px-6 py-3 flex justify-between items-center text-sm">
+                <div className="max-w-[1440px] mx-auto px-6 py-3 hidden md:flex justify-between items-center text-sm">
                     <div className="flex items-center space-x-6">
                         <span className="flex items-center">
                             <Phone className="w-4 h-4 mr-2" />
@@ -69,14 +69,14 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Main Header */}
+            {/* Main Header - Single Instance */}
             <div className="max-w-[1440px] mx-auto px-6 py-4 flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="text-2xl font-bold text-[#252B42]">
                     Bandage
                 </Link>
 
-                {/* Center Navigation */}
+                {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center space-x-6">
                     <Link to="/" className="text-[#737373] hover:text-[#252B42]">Home</Link>
                     <div
@@ -88,7 +88,6 @@ const Header = () => {
                             Shop
                             <ChevronDown className="ml-1 w-4 h-4" />
                         </Link>
-                        {/* Dropdown */}
                         <div
                             className={`absolute bg-white shadow-lg mt-4 top-full left-0 min-w-[400px] z-50 rounded-md transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
                                 }`}
@@ -106,7 +105,6 @@ const Header = () => {
                 <div className="flex items-center space-x-6">
                     {user.email ? (
                         <div className="hidden lg:flex items-center space-x-2 text-[#23A6F0]">
-                            <Gravatar email={user.email} size={40} className="rounded-full" />
                             <span>{user.name}</span>
                             <button onClick={handleLogout}>Logout</button>
                         </div>
