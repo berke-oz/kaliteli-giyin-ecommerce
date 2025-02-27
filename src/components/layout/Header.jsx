@@ -17,11 +17,16 @@ import { logoutUser } from "../../actions/clientActions";
 import { Link } from "react-router-dom";
 import CategoryList from "../CategoryList";
 import { fetchCategories } from "../../actions/categoryActions";
+import CartDropdown from '../CartDropdown';
 
 const Header = () => {
     const user = useSelector((state) => state.client.user);
     const dispatch = useDispatch();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartItems = useSelector(state => state.cart.items);
+
+    const totalItems = cartItems.reduce((total, item) => total + item.count, 0);
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -113,19 +118,20 @@ const Header = () => {
                             <span className="mr-1">Login</span> / <span className="ml-1">Register</span>
                         </Link>
                     )}
-                    <div className="flex items-center space-x-4">
-                        <button className="text-[#23A6F0]">
-                            <Search className="w-5 h-5" />
-                        </button>
-                        <Link to="/cart" className="flex items-center text-[#23A6F0]">
+                    <div className="relative">
+                        <button
+                            className="flex items-center text-[#23A6F0]"
+                            onClick={() => setIsCartOpen(!isCartOpen)}
+                        >
                             <ShoppingCart className="w-5 h-5" />
-                            <span className="ml-1">1</span>
-                        </Link>
-                        <Link to="/wishlist" className="flex items-center text-[#23A6F0]">
-                            <Heart className="w-5 h-5" />
-                            <span className="ml-1">1</span>
-                        </Link>
+                            <span className="ml-1">{totalItems}</span>
+                        </button>
+                        {isCartOpen && <CartDropdown />}
                     </div>
+                    <Link to="/wishlist" className="flex items-center text-[#23A6F0]">
+                        <Heart className="w-5 h-5" />
+                        <span className="ml-1">1</span>
+                    </Link>
                 </div>
             </div>
 
