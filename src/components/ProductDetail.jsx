@@ -1,19 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchProduct } from '../actions/productActions';
-import { Heart, Eye, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { addToCart } from '../actions/cartActions';
+import { Heart, Eye, ShoppingCart, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
 const ProductDetail = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showAddedEffect, setShowAddedEffect] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
 
     const { product, loading, error } = useSelector(state => state.product);
 
     useEffect(() => {
         dispatch(fetchProduct(productId));
     }, [dispatch, productId]);
+
+    const handleAddToCart = () => {
+        if (product) {
+            dispatch(addToCart(product));
+            setShowAddedEffect(true);
+
+            // 2 saniye sonra efekti kaldır
+            setTimeout(() => {
+                setShowAddedEffect(false);
+            }, 2000);
+        }
+    };
+
+    const handleLike = () => {
+        setIsLiked(!isLiked);
+    };
 
     if (loading) {
         return (
@@ -48,7 +67,7 @@ const ProductDetail = () => {
                     className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
                 >
                     <ChevronLeft className="w-5 h-5 mr-1" />
-                    <span className="font-montserrat">Shop</span>
+                    <span className="font-montserrat">Back</span>
                 </button>
             </div>
 
@@ -130,11 +149,38 @@ const ProductDetail = () => {
                             Select Options
                         </button>
                         <div className="flex gap-2">
-                            <button className="p-3 rounded-md border border-gray-200 hover:bg-gray-50">
-                                <Heart className="h-6 w-6 text-gray-600" />
+                            <button
+                                onClick={handleLike}
+                                className={`p-3 rounded-md border relative overflow-hidden transition-all duration-300
+                                         ${isLiked
+                                        ? 'border-red-500 bg-red-50'
+                                        : 'border-gray-200 hover:bg-gray-50'}`}
+                            >
+                                <Heart
+                                    className={`h-6 w-6 transition-colors duration-300 
+                                              ${isLiked
+                                            ? 'text-red-500 fill-red-500'
+                                            : 'text-gray-600'}`}
+                                />
                             </button>
-                            <button className="p-3 rounded-md border border-gray-200 hover:bg-gray-50">
-                                <ShoppingCart className="h-6 w-6 text-gray-600" />
+                            <button
+                                onClick={handleAddToCart}
+                                className={`p-3 rounded-md border relative overflow-hidden transition-all duration-300
+                                         ${showAddedEffect
+                                        ? 'border-[#23A6F0] bg-blue-50'
+                                        : 'border-gray-200 hover:bg-gray-50'}`}
+                                disabled={showAddedEffect}
+                            >
+                                <div className={`absolute inset-0 flex items-center justify-center bg-[#23A6F0]
+                                              transform transition-transform duration-300 
+                                              ${showAddedEffect ? 'translate-y-0' : 'translate-y-full'}`}>
+                                    <Check className="h-6 w-6 text-white" />
+                                </div>
+                                <ShoppingCart className={`h-6 w-6 transition-all duration-300
+                                                       ${showAddedEffect
+                                        ? 'opacity-0'
+                                        : 'text-gray-600'}`}
+                                />
                             </button>
                             <button className="p-3 rounded-md border border-gray-200 hover:bg-gray-50">
                                 <Eye className="h-6 w-6 text-gray-600" />
