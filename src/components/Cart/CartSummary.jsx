@@ -23,27 +23,25 @@ const CartSummary = ({ items }) => {
     };
 
     return (
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
-            <h3 className="text-2xl font-bold text-[#252B42] mb-6 font-montserrat">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#252B42] mb-4 sm:mb-6 font-montserrat">
                 Sipariş Özeti
             </h3>
 
             {totalAmount > 0 && (
-                <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 
+                <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg flex items-center gap-3 
                     ${totalAmount >= FREE_SHIPPING_THRESHOLD
                         ? 'bg-green-50 text-green-700'
                         : 'bg-blue-50 text-blue-700'}`}
                 >
-                    <Truck className="w-5 h-5" />
-                    {totalAmount >= FREE_SHIPPING_THRESHOLD ? (
-                        <p className="text-sm font-medium">
-                            Kargo Bedava! 🎉
-                        </p>
-                    ) : (
-                        <p className="text-sm font-medium">
-                            {`$${remainingForFreeShipping.toFixed(2)} daha harcayarak ücretsiz kargo fırsatından yararlanın!`}
-                        </p>
-                    )}
+                    <Truck className="w-5 h-5 flex-shrink-0" />
+                    <p className="text-sm font-medium">
+                        {totalAmount >= FREE_SHIPPING_THRESHOLD ? (
+                            'Kargo Bedava! 🎉'
+                        ) : (
+                            `$${remainingForFreeShipping.toFixed(2)} daha harcayarak ücretsiz kargo fırsatından yararlanın!`
+                        )}
+                    </p>
                 </div>
             )}
 
