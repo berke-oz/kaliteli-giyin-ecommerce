@@ -5,12 +5,12 @@ import HomePage from './components/pages/HomePage';
 import ShopPage from './components/pages/ShopPage';
 import SignUpPage from './components/pages/SignUpPage';
 import LoginFormPage from './components/pages/LoginFormPage';
+import Footer from './components/layout/Footer';
+import CartPage from './components/pages/CartPage';
 
 import { loadUserFromStorage } from './actions/clientActions';
 import ShopProductCards from './components/ShopPageComponents/ShopProductCard';
 import ProductDetailPage from './components/pages/ProductDetailPage';
-import ProductDetail from './components/ProductDetail';
-
 
 const App = () => {
   const dispatch = useDispatch();
@@ -21,16 +21,20 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginFormPage />} />
-        <Route path="/shop/:gender/:categoryName/:categoryId" element={<ShopProductCards />} />
-        <Route path="/product/:productId" element={<ProductDetailPage />} />
+      <div className="flex flex-col min-h-screen">
 
-      </Routes>
-
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/shop" element={<ShopPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginFormPage />} />
+            <Route path="/shop/:gender/:categoryName/:categoryId" element={<ShopProductCards />} />
+            <Route path="/product/:productId" element={<ProductDetailPage />} />
+            <Route path="/cart" element={<CartPage />} />
+          </Routes>
+        </main>
+      </div>
     </Router>
   );
 };
