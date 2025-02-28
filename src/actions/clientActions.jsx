@@ -1,4 +1,5 @@
 import api from '../services/api';
+import { toast } from 'react-toastify';
 
 export const setUser = (user) => ({
     type: 'SET_USER',
@@ -42,20 +43,25 @@ export const loginUser = (data) => {
                 password: data.password,
             });
 
-            if (response.status !== 200) {
-                throw new Error('Login failed');
-            }
-
             const user = response.data;
-            dispatch(setUser(user));
 
-            sessionStorage.setItem('user', JSON.stringify(user));
-            if (data.rememberMe) {
-                localStorage.setItem('token', user.token);
+            if (user.token) {
+                api.defaults.headers.common['Authorization'] = user.token;
+
+                dispatch(setUser(user));
+
+                sessionStorage.setItem('user', JSON.stringify(user));
+                if (data.rememberMe) {
+                    localStorage.setItem('token', user.token);
+                }
+
+                toast.success('Giriş başarılı!');
+                return true;
             }
-            api.defaults.headers.common['Authorization'] = user.token;
         } catch (error) {
-            throw new Error('Login failed');
+            console.error('Login error:', error);
+            toast.error('Email veya şifre hatalı!');
+            throw error;
         }
     };
 };
@@ -64,6 +70,7 @@ export const loadUserFromStorage = () => {
     return async (dispatch) => {
         const token = localStorage.getItem('token');
         const user = JSON.parse(sessionStorage.getItem('user'));
+
         if (user) {
             dispatch(setUser(user));
             api.defaults.headers.common['Authorization'] = user.token;
@@ -71,11 +78,10 @@ export const loadUserFromStorage = () => {
             api.defaults.headers.common['Authorization'] = token;
             try {
                 const response = await api.get('/verify');
-                const user = response.data;
-                dispatch(setUser(user));
-                sessionStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem('token', user.token);
-                api.defaults.headers.common['Authorization'] = user.token;
+                const verifiedUser = response.data;
+
+                dispatch(setUser(verifiedUser));
+                sessionStorage.setItem('user', JSON.stringify(verifiedUser));
             } catch (error) {
                 localStorage.removeItem('token');
                 delete api.defaults.headers.common['Authorization'];

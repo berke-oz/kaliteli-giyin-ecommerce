@@ -13,4 +13,21 @@ if (token) {
     api.defaults.headers.common['Authorization'] = token;
 }
 
+// Adres işlemleri için API fonksiyonları
+export const getUserAddresses = () => {
+    return api.get('/user/address');
+};
+
+export const addAddress = (addressData) => {
+    return api.post('/user/address', addressData);
+};
+
+export const updateAddress = (addressData) => {
+    return api.put('/user/address', addressData);
+};
+
+export const deleteAddress = (addressId) => {
+    return api.delete(`/user/address/${addressId}`);
+};
+
 export default api; 

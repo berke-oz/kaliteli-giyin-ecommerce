@@ -1,25 +1,31 @@
 import React from 'react';
 import { ArrowRight, Truck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { FREE_SHIPPING_THRESHOLD } from '../../utils/constants';
 
 const CartSummary = ({ items }) => {
     const navigate = useNavigate();
-    const FREE_SHIPPING_THRESHOLD = 150;
+    const user = useSelector(state => state.client.user);
 
     const totalAmount = items
         .filter(item => item.checked)
         .reduce((total, item) => total + (item.product.price * item.count), 0);
 
     const subtotal = totalAmount;
-    const shipping = totalAmount > 0 ? (totalAmount >= FREE_SHIPPING_THRESHOLD ? 0 : 10) : 0;
+    const shipping = totalAmount > 0 ? (totalAmount >= FREE_SHIPPING_THRESHOLD ? 0 : 29.99) : 0;
     const tax = totalAmount * 0.18;
     const total = subtotal + shipping + tax;
 
     const selectedItemCount = items.filter(item => item.checked).length;
     const remainingForFreeShipping = FREE_SHIPPING_THRESHOLD - totalAmount;
 
-    const handleContinueShopping = () => {
-        navigate('/shop');
+    const handleButtonClick = () => {
+        if (user) {
+            navigate('/create-order');
+        } else {
+            navigate('/login');
+        }
     };
 
     return (
@@ -79,23 +85,15 @@ const CartSummary = ({ items }) => {
             </div>
 
             <button
-                className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 mb-3
-                          transition-all duration-200 ${totalAmount > 0
+                onClick={handleButtonClick}
+                className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2
+                          transition-all duration-200 ${items.length > 0
                         ? 'bg-[#23A6F0] text-white hover:bg-[#1a8ed0] transform hover:-translate-y-0.5'
                         : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     }`}
-                disabled={totalAmount === 0}
+                disabled={items.length === 0}
             >
-                Siparişi Tamamla
-                <ArrowRight className="w-5 h-5" />
-            </button>
-
-            <button
-                onClick={handleContinueShopping}
-                className="w-full border-2 border-[#23A6F0] text-[#23A6F0] py-4 rounded-xl
-                         font-semibold hover:bg-[#23A6F0] hover:text-white transition-all duration-200"
-            >
-                Alışverişe Devam Et
+                {user ? 'Siparişi Tamamla' : 'Giriş Yap'}
             </button>
         </div>
     );
