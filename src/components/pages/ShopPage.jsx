@@ -8,7 +8,7 @@ import ShopProductCard from '../ShopPageComponents/ShopProductCard';
 const ShopPage = () => {
     return (
         <Layout>
-            <ShopCards />
+
             <FilterShopPage />
             <ShopProductCard />
             <Clients />

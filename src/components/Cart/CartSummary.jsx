@@ -1,28 +1,34 @@
 import React from 'react';
-import { ArrowRight, Truck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FREE_SHIPPING_THRESHOLD } from '../../utils/constants';
+import { Truck } from 'lucide-react';
+
+const FREE_SHIPPING_THRESHOLD = 100;
 
 const CartSummary = ({ items }) => {
     const navigate = useNavigate();
-    const user = useSelector(state => state.client.user);
+    const location = useLocation();
+    const user = useSelector((state) => state.client.user);
 
     const totalAmount = items
-        .filter(item => item.checked)
-        .reduce((total, item) => total + (item.product.price * item.count), 0);
+        .filter((item) => item.checked)
+        .reduce((total, item) => total + item.product.price * item.count, 0);
 
     const subtotal = totalAmount;
     const shipping = totalAmount > 0 ? (totalAmount >= FREE_SHIPPING_THRESHOLD ? 0 : 29.99) : 0;
     const tax = totalAmount * 0.18;
     const total = subtotal + shipping + tax;
 
-    const selectedItemCount = items.filter(item => item.checked).length;
+    const selectedItemCount = items.filter((item) => item.checked).length;
     const remainingForFreeShipping = FREE_SHIPPING_THRESHOLD - totalAmount;
 
     const handleButtonClick = () => {
         if (user) {
-            navigate('/create-order');
+            if (location.pathname === '/cart') {
+                navigate('/create-order');
+            } else if (location.pathname === '/create-order') {
+                navigate('/payment');
+            }
         } else {
             navigate('/login');
         }
@@ -35,17 +41,20 @@ const CartSummary = ({ items }) => {
             </h3>
 
             {totalAmount > 0 && (
-                <div className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg flex items-center gap-3 
+                <div
+                    className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg flex items-center gap-3 
                     ${totalAmount >= FREE_SHIPPING_THRESHOLD
-                        ? 'bg-green-50 text-green-700'
-                        : 'bg-blue-50 text-blue-700'}`}
+                            ? 'bg-green-50 text-green-700'
+                            : 'bg-blue-50 text-blue-700'}`}
                 >
                     <Truck className="w-5 h-5 flex-shrink-0" />
                     <p className="text-sm font-medium">
                         {totalAmount >= FREE_SHIPPING_THRESHOLD ? (
                             'Kargo Bedava! 🎉'
                         ) : (
-                            `$${remainingForFreeShipping.toFixed(2)} daha harcayarak ücretsiz kargo fırsatından yararlanın!`
+                            `$${remainingForFreeShipping.toFixed(
+                                2
+                            )} daha harcayarak ücretsiz kargo fırsatından yararlanın!`
                         )}
                     </p>
                 </div>
@@ -99,4 +108,4 @@ const CartSummary = ({ items }) => {
     );
 };
 
-export default CartSummary; 
+export default CartSummary;

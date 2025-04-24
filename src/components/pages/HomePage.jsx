@@ -1,10 +1,8 @@
 
-import BlogHighlights from "../HomePageComponents/BlogHighlights";
-import Carousel from "../HomePageComponents/Carousel";
 import EditorsPicks from "../HomePageComponents/EditorsPicks";
-import FeaturedProducts from "../HomePageComponents/FeaturedProducts";
+import FeaturedProduct from "../HomePageComponents/FeaturedProduct";
 import HomeBanner from "../HomePageComponents/HomeBanner";
-import InfoContainer from "../HomePageComponents/InfoContainer";
+import TrustBadges from "../HomePageComponents/TrustBadges";
 import Layout from "../layout/Layout";
 
 const HomePage = () => {
@@ -12,10 +10,7 @@ const HomePage = () => {
         <Layout>
             <HomeBanner />
             <EditorsPicks />
-            <FeaturedProducts />
-            <Carousel />
-            <InfoContainer />
-            <BlogHighlights />
+            <TrustBadges />
         </Layout>
     );
 };

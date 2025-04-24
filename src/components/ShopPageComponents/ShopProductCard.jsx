@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchProducts } from '../../actions/productActions';
 import { Link } from 'react-router-dom';
 
-// Product Card Component
+
 const ShopProductCard = ({ id, image, title, description, price }) => (
     <Link to={`/product/${id}`} className="w-[238px] h-[484px] p-4 flex flex-col">
         <img
@@ -22,7 +22,7 @@ const ShopProductCard = ({ id, image, title, description, price }) => (
     </Link>
 );
 
-// Main Component
+
 const ShopProductCards = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,7 +33,6 @@ const ShopProductCards = () => {
     const productsPerPage = 25;
     const totalPages = Math.ceil(total / productsPerPage);
 
-    // URL'den sayfa parametresini al
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const page = parseInt(queryParams.get('page')) || 1;
@@ -41,11 +40,11 @@ const ShopProductCards = () => {
         const sort = queryParams.get('sort') || '';
 
         setCurrentPage(page);
-        // fetch ürünler (filter ve sort ile)
+
         dispatch(fetchProducts(null, sort, filter, productsPerPage, (page - 1) * productsPerPage));
     }, [location.search, dispatch]);
 
-    // Sayfa değiştirme işleyicisi
+
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
         const queryParams = new URLSearchParams(location.search);
@@ -54,13 +53,12 @@ const ShopProductCards = () => {
         // URL'yi güncelle
         navigate({
             pathname: location.pathname,
-            search: `?${queryParams.toString()}` // Mevcut parametreler ile yeni URL'yi oluştur
+            search: `?${queryParams.toString()}`
         });
 
         dispatch(fetchProducts(null, null, null, productsPerPage, (newPage - 1) * productsPerPage));
     };
 
-    // Sayfa butonları aralığını hesapla
     const getPageButtons = () => {
         const pageNumbers = [];
         const maxButtons = 3;
@@ -105,7 +103,7 @@ const ShopProductCards = () => {
                     {products?.map(product => (
                         <ShopProductCard
                             key={product.id}
-                            id={product.id} // Pass the product ID to the card
+                            id={product.id}
                             image={product.images[0].url}
                             title={product.name}
                             description={product.description}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, List } from 'lucide-react';
-// Resimleri import ediyoruz
 import cardCover1 from '../../images/card-cover-5.jpg';
 import cardCover2 from '../../images/card-cover-6.jpg';
 import cardCover3 from '../../images/card-cover-7.jpg';

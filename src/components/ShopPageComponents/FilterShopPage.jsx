@@ -19,40 +19,36 @@ const FilterShopPage = () => {
     const [filter, setFilter] = useState(initialFilter);
     const [viewType, setViewType] = useState('grid');
 
-    // Parametreler değiştiğinde ürünleri yeniden yükle
     useEffect(() => {
         dispatch(fetchProducts(categoryId, sort, filter));
     }, [dispatch, categoryId, sort, filter]);
 
-    // URL'yi güncelle
+
     const updateURL = (newSort, newFilter, page = 1) => {
         const searchParams = new URLSearchParams();
         if (categoryId) searchParams.set('category', categoryId);
         if (newFilter) searchParams.set('filter', newFilter);
         if (newSort) searchParams.set('sort', newSort);
-        searchParams.set('page', page);  // Sayfa parametresini ekle
+        searchParams.set('page', page);
 
-        navigate(`?${searchParams.toString()}`, { replace: true }); // URL'yi günceller
+        navigate(`?${searchParams.toString()}`, { replace: true });
     };
 
     // Sıralama değiştiğinde
     const handleSortChange = (e) => {
         const newSort = e.target.value;
         setSort(newSort);
-        updateURL(newSort, filter);  // URL'yi sıralama değiştiğinde güncelle
+        updateURL(newSort, filter);
     };
 
     // Filtre metni değiştiğinde
     const handleFilterChange = (e) => {
         const newFilter = e.target.value;
         setFilter(newFilter);
-        updateURL(sort, newFilter);  // URL'yi filtre değiştiğinde güncelle
+        updateURL(sort, newFilter);
     };
 
-    // Görünüm değiştiğinde
-    const handleViewTypeChange = (type) => {
-        setViewType(type);
-    };
+
 
     return (
         <div className="p-4 flex flex-col md:flex-row justify-center items-center gap-[24px] md:gap-[200px]">
@@ -60,7 +56,7 @@ const FilterShopPage = () => {
                 <p className="text-lg">Toplam {total} ürün gösteriliyor</p>
             </div>
 
-            {/* View type switches */}
+
             <div className="flex justify-center items-center gap-[15px] mb-4 md:mb-0">
                 <span className="text-lg">Görünüm:</span>
                 <div className="flex gap-[15px]">
@@ -81,7 +77,6 @@ const FilterShopPage = () => {
                 </div>
             </div>
 
-            {/* Filter controls */}
             <div className="flex justify-center items-center gap-[15px]">
                 <select
                     className="w-[141px] h-[50px] bg-white border border-gray-300 rounded px-2"

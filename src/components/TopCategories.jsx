@@ -11,7 +11,6 @@ const TopCategories = () => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
-    // Kadın ve Erkek kategorilerini ayırma ve en iyi 5 kategoriyi seçme
     const topWomenCategories = categories
         .filter(category => category.gender === "k")
         .sort((a, b) => b.rating - a.rating)

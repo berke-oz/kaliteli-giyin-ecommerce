@@ -11,42 +11,41 @@ const CategoryList = () => {
         dispatch(fetchCategories());
     }, [dispatch]);
 
-    // Kadın ve Erkek kategorilerini ayırma
+
     const womenCategories = categories.filter(category => category.gender === "k");
     const menCategories = categories.filter(category => category.gender === "e");
 
     return (
-        <div className="p-4 bg-white">
-            <div className="grid grid-cols-2 gap-4">
-                <div className="pl-6">
-                    <h3 className="font-bold text-[#252B42] text-base mb-3">Kadın</h3>
-                    <ul className="space-y-3">
-                        {womenCategories.map(category => (
-                            <li key={category.id} className="pl-2">
-                                <Link
-                                    to={`/shop/k/${category.title}/${category.id}`}
-                                    className="text-[#737373] hover:text-[#252B42] text-sm"
-                                >
-                                    {category.title}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+        <div className="flex gap-8 min-w-[400px] p-2">
+            {/* Kadın Kategorileri */}
+            <div className="flex-1">
+                <h3 className="font-medium text-sm mb-2 text-black">KADIN</h3>
+                <div className="flex flex-col space-y-1">
+                    {womenCategories.map(category => (
+                        <Link
+                            key={category.id}
+                            to={`/shop?category=${category.id}`}
+                            className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                        >
+                            {category.title}
+                        </Link>
+                    ))}
                 </div>
-                <div className="pl-6">
-                    <h3 className="font-bold text-[#252B42] text-base mb-3">Erkek</h3>
-                    <ul className="space-y-3">
-                        {menCategories.map(category => (
-                            <li key={category.id} className="pl-2">
-                                <Link
-                                    to={`/shop/e/${category.title}/${category.id}`}
-                                    className="text-[#737373] hover:text-[#252B42] text-sm"
-                                >
-                                    {category.title}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
+            </div>
+
+            {/* Erkek Kategorileri */}
+            <div className="flex-1">
+                <h3 className="font-medium text-sm mb-2 text-black">ERKEK</h3>
+                <div className="flex flex-col space-y-1">
+                    {menCategories.map(category => (
+                        <Link
+                            key={category.id}
+                            to={`/shop?category=${category.id}`}
+                            className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                        >
+                            {category.title}
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>

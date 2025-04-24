@@ -27,7 +27,7 @@ const CartTable = ({ items }) => {
 
     return (
         <div className="bg-white rounded-xl shadow-lg border border-gray-100">
-            {/* Desktop View */}
+
             <div className="hidden sm:block">
                 <CartTableHeader />
                 <div className="divide-y divide-gray-100">
@@ -43,7 +43,7 @@ const CartTable = ({ items }) => {
                 </div>
             </div>
 
-            {/* Mobile View */}
+
             <div className="sm:hidden divide-y divide-gray-100">
                 {items.map(item => (
                     <div key={item.product.id} className="p-4 space-y-4">

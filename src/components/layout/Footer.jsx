@@ -3,9 +3,8 @@ import React from 'react';
 const Footer = () => {
     return (
         <footer className="bg-white text-gray-800 p-8">
-            {/* Üst Kısım */}
+
             <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div className="text-2xl font-bold">Bandage</div>
                 <div className="flex space-x-4 mt-4 md:mt-0">
                     <a href="#" className="text-gray-800 hover:text-blue-500">
                         <i className="fab fa-facebook-f"></i>
@@ -59,7 +58,6 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* E-posta Abonelik Alanı */}
             <div className="mb-8 text-center">
                 <h3 className="font-bold mb-2">Get in Touch</h3>
                 <div className="flex justify-center">
@@ -74,7 +72,7 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Alt Kısım */}
+
             <div className="text-center text-gray-500 text-sm">
                 Made With Love By Finland All Rights Reserved
             </div>

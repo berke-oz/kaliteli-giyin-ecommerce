@@ -13,6 +13,8 @@ import ProtectedRoute from './components/routes/ProtectedRoute';
 import { loadUserFromStorage } from './actions/clientActions';
 import ShopProductCards from './components/ShopPageComponents/ShopProductCard';
 import ProductDetailPage from './components/pages/ProductDetailPage';
+import PaymentPage from './components/pages/PaymentPage';
+import PaymentSuccessPage from './components/pages/PaymentSuccessPage';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +45,9 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
+
         </Routes>
 
       </Router>

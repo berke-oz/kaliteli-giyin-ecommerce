@@ -1,164 +1,216 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
-    Phone,
-    Mail,
-    Instagram,
-    Youtube,
-    Facebook,
-    Twitter,
-    Search,
-    ShoppingCart,
     Heart,
+    Menu,
+    Search,
+    ShoppingBag,
+    User,
+    X,
     ChevronDown
 } from "lucide-react";
-import Gravatar from "react-gravatar";
 import { logoutUser } from "../../actions/clientActions";
-import { Link } from "react-router-dom";
-import CategoryList from "../CategoryList";
 import { fetchCategories } from "../../actions/categoryActions";
+import CategoryList from "../CategoryList";
 import CartDropdown from '../CartDropdown';
+import Logo from '../../images/Green-Modern-Marketing-Logo.png';
 
 const Header = () => {
-    const user = useSelector((state) => state.client.user);
     const dispatch = useDispatch();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    const user = useSelector((state) => state.client.user);
     const cartItems = useSelector(state => state.cart.items);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     const totalItems = cartItems.reduce((total, item) => total + item.count, 0);
 
     useEffect(() => {
         dispatch(fetchCategories());
+
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [dispatch]);
 
     const handleLogout = () => {
         dispatch(logoutUser());
     };
 
-    const handleMouseEnter = () => {
-        setIsDropdownOpen(true);
-    };
-
-    const handleMouseLeave = () => {
-        setIsDropdownOpen(false);
-    };
-
     return (
-        <header className="bg-white w-full">
-            {/* Top Bar */}
-            <div className="bg-[#252B42] text-white">
-                <div className="max-w-[1440px] mx-auto px-6 py-3 hidden md:flex justify-between items-center text-sm">
-                    <div className="flex items-center space-x-6">
-                        <span className="flex items-center">
-                            <Phone className="w-4 h-4 mr-2" />
-                            (225) 555-0118
-                        </span>
-                        <span className="flex items-center">
-                            <Mail className="w-4 h-4 mr-2" />
-                            michelle.rivera@example.com
-                        </span>
-                    </div>
-                    <div className="text-center">
-                        Follow Us  and get a chance to win 80% off
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <span className="mr-2">Follow Us :</span>
-                        <div className="flex items-center space-x-3">
-                            <Instagram className="w-4 h-4" />
-                            <Youtube className="w-4 h-4" />
-                            <Facebook className="w-4 h-4" />
-                            <Twitter className="w-4 h-4" />
-                        </div>
-                    </div>
-                </div>
+        <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-white"}`}>
+            {/* Üst Bar */}
+            <div className="hidden md:flex h-8 items-center justify-center bg-[#252B42] text-white text-sm">
+                <p>Ücretsiz kargo - 300 TL ve üzeri siparişlerde</p>
             </div>
 
-            {/* Main Header - Single Instance */}
-            <div className="max-w-[1440px] mx-auto px-6 py-4 flex justify-between items-center">
-                {/* Logo */}
-                <Link to="/" className="text-2xl font-bold text-[#252B42]">
-                    Bandage
-                </Link>
-
-                {/* Desktop Navigation */}
-                <nav className="hidden lg:flex items-center space-x-6">
-                    <Link to="/" className="text-[#737373] hover:text-[#252B42]">Home</Link>
-                    <div
-                        className="relative"
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                    >
-                        <Link to="/shop" className="text-[#737373] hover:text-[#252B42] flex items-center">
-                            Shop
-                            <ChevronDown className="ml-1 w-4 h-4" />
-                        </Link>
-                        <div
-                            className={`absolute bg-white shadow-lg mt-4 top-full left-0 min-w-[400px] z-50 rounded-md transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
-                                }`}
-                        >
-                            <CategoryList />
-                        </div>
-                    </div>
-                    <Link to="/about" className="text-[#737373] hover:text-[#252B42]">About</Link>
-                    <Link to="/blog" className="text-[#737373] hover:text-[#252B42]">Blog</Link>
-                    <Link to="/contact" className="text-[#737373] hover:text-[#252B42]">Contact</Link>
-                    <Link to="/pages" className="text-[#737373] hover:text-[#252B42]">Pages</Link>
-                </nav>
-
-                {/* Right Section */}
-                <div className="flex items-center space-x-6">
-                    {user.email ? (
-                        <div className="hidden lg:flex items-center space-x-2 text-[#23A6F0]">
-                            <span>{user.name}</span>
-                            <button onClick={handleLogout}>Logout</button>
-                        </div>
-                    ) : (
-                        <Link to="/login" className="hidden lg:flex items-center text-[#23A6F0]">
-                            <span className="mr-1">Login</span> / <span className="ml-1">Register</span>
-                        </Link>
-                    )}
-                    <div className="relative">
+            <div className="container mx-auto px-4">
+                <div className="flex h-14 md:h-16 items-center justify-between">
+                    {/* Mobile Menu */}
+                    <div className="md:hidden">
                         <button
-                            className="flex items-center text-[#23A6F0]"
-                            onClick={() => setIsCartOpen(!isCartOpen)}
+                            onClick={() => setIsMobileMenuOpen(true)}
+                            className="p-2 hover:bg-gray-100 rounded-md"
                         >
-                            <ShoppingCart className="w-5 h-5" />
-                            <span className="ml-1">{totalItems}</span>
+                            <Menu className="h-6 w-6" />
+                            <span className="sr-only">Menüyü aç</span>
                         </button>
-                        {isCartOpen && <CartDropdown />}
+
+                        {/* Mobile Menu Overlay */}
+                        {isMobileMenuOpen && (
+                            <div className="fixed inset-0 z-50 bg-white">
+                                <div className="flex flex-col h-full">
+                                    <div className="flex items-center justify-between p-4 border-b">
+                                        <Link to="/" className="flex items-center">
+                                            <span className="text-2xl tracking-widest uppercase relative group">
+                                                <span className="font-bold bg-gradient-to-r from-black to-black bg-[length:0%_1px] bg-no-repeat bg-left-bottom group-hover:bg-[length:100%_1px] transition-all duration-500">
+                                                    Dress
+                                                </span>
+                                                <span className="font-light">io</span>
+                                                <span className="absolute -top-1 -right-2 h-1.5 w-1.5 bg-[#1a8ed0] rounded-full"></span>
+                                            </span>
+                                        </Link>
+                                        <button
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="p-2 hover:bg-gray-100 rounded-md"
+                                        >
+                                            <X className="h-5 w-5" />
+                                        </button>
+                                    </div>
+
+                                    <nav className="flex flex-col space-y-4 p-6">
+                                        <Link to="/" className="py-2 text-lg font-medium hover:text-gray-600">
+                                            Home
+                                        </Link>
+                                        <Link to="/shop" className="py-2 text-lg font-medium hover:text-gray-600">
+                                            Shop
+                                        </Link>
+                                        <Link to="/about" className="py-2 text-lg font-medium hover:text-gray-600">
+                                            About
+                                        </Link>
+                                        <Link to="/blog" className="py-2 text-lg font-medium hover:text-gray-600">
+                                            Blog
+                                        </Link>
+                                        <Link to="/contact" className="py-2 text-lg font-medium hover:text-gray-600">
+                                            Contact
+                                        </Link>
+                                    </nav>
+
+                                    <div className="mt-auto border-t p-4">
+                                        {user.email ? (
+                                            <div className="flex flex-col space-y-4">
+                                                <span>{user.name}</span>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="flex items-center py-2 hover:text-gray-600"
+                                                >
+                                                    <User className="h-5 w-5 mr-2" />
+                                                    Çıkış Yap
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <Link to="/login" className="flex items-center py-2 hover:text-gray-600">
+                                                <User className="h-5 w-5 mr-2" />
+                                                Giriş Yap / Kayıt Ol
+                                            </Link>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <Link to="/wishlist" className="flex items-center text-[#23A6F0]">
-                        <Heart className="w-5 h-5" />
-                        <span className="ml-1">1</span>
+
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center">
+                        <span className="text-3xl tracking-widest uppercase relative group">
+                            <span className="font-bold bg-gradient-to-r from-black to-black bg-[length:0%_1px] bg-no-repeat bg-left-bottom group-hover:bg-[length:100%_1px] transition-all duration-500">
+                                Dress
+                            </span>
+                            <span className="font-light">io</span>
+                            <span className="absolute -top-1 -right-2 h-1.5 w-1.5 bg-[#1a8ed0] rounded-full"></span>
+                        </span>
                     </Link>
+
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center space-x-8">
+                        <Link to="/" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                            Home
+                        </Link>
+                        <div className="relative group">
+                            <Link to="/shop" className="text-sm font-medium hover:text-gray-600 transition-colors flex items-center">
+                                Shop <ChevronDown className="h-4 w-4 ml-1" />
+                            </Link>
+                            <div className="absolute hidden group-hover:block bg-white shadow-lg mt-1 p-4 rounded-md min-w-[200px]">
+                                <CategoryList />
+                            </div>
+                        </div>
+                        <Link to="/about" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                            About
+                        </Link>
+                        <Link to="/blog" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                            Blog
+                        </Link>
+                        <Link to="/contact" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                            Contact
+                        </Link>
+                    </nav>
+
+                    {/* Right Section */}
+                    <div className="flex items-center space-x-5">
+                        <button className="hidden md:flex p-2 hover:bg-gray-100 rounded-md">
+                            <Search className="h-5 w-5" />
+                            <span className="sr-only">Ara</span>
+                        </button>
+
+                        {user.email ? (
+                            <div className="hidden md:flex items-center space-x-4">
+                                <span className="text-sm">{user.name}</span>
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-sm hover:text-gray-600"
+                                >
+                                    Çıkış
+                                </button>
+                            </div>
+                        ) : (
+                            <Link to="/login" className="hidden md:flex items-center text-sm font-medium hover:text-gray-600">
+                                <User className="h-5 w-5 mr-1" />
+                                <span>Giriş / Kayıt</span>
+                            </Link>
+                        )}
+
+                        <Link to="/wishlist" className="relative">
+                            <Heart className="h-5 w-5" />
+                            <span className="sr-only">Favoriler</span>
+                            <span className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center bg-black text-white text-[10px] rounded-full">
+                                1
+                            </span>
+                        </Link>
+
+                        <div className="relative mt-[4px]">
+                            <button
+                                onClick={() => setIsCartOpen(!isCartOpen)}
+                                className="relative"
+                            >
+                                <ShoppingBag className="h-5 w-5" />
+                                <span className="sr-only">Sepet</span>
+                                <span className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center bg-black text-white text-[10px] rounded-full">
+                                    {totalItems}
+                                </span>
+                            </button>
+                            {isCartOpen && <CartDropdown />}
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            {/* Navbar for Mobile */}
-            <div className="container mx-auto flex justify-between items-center mb-8 md:hidden">
-                {/* Logo */}
-                <div className="text-2xl font-bold">
-                    <a href="/">Bandage</a>
-                </div>
-
-                {/* Icons */}
-                <div className="flex space-x-6">
-                    <a href="#"><Search className="w-5 h-5" /></a>
-                    <a href="#"><ShoppingCart className="w-5 h-5" /></a>
-                    <a href="#"><Heart className="w-5 h-5" /></a>
-                </div>
-            </div>
-
-            {/* Navbar Links for Mobile */}
-            <nav className="mt-15 mb-25 ml-15 md:hidden">
-                <ul className="flex flex-col items-center space-y-8">
-                    <li><a href="/" className="text-2xl">Home</a></li>
-                    <li><a href="/product" className="text-2xl">Product</a></li>
-                    <li><a href="/pricing" className="text-2xl">Pricing</a></li>
-                    <li><a href="/contact" className="text-2xl">Contact</a></li>
-                </ul>
-            </nav>
         </header>
     );
 };
