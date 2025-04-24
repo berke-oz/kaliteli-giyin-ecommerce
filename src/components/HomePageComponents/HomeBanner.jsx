@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import videoSrc from '/src/images/Home-banner-video.mp4';
+
 
 const HomeBanner = () => {
-    const videoSrc = '/src/images/Home-banner-video.mp4';
+
     const navigate = useNavigate();
 
     return (

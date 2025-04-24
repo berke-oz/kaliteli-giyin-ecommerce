@@ -1,4 +1,8 @@
 import React from 'react';
+import erkekKategori from '../../images/Erkek-kategori.jpg';
+import kadınKategori from '../../images/Kadın-Kategori.jpg';
+import çocukKategori from '../../images/cocuk-kategori.jpg';
+import aksesuarKategori from '../../images/Aksesuar-kategori.jpg';
 
 const ImageCard = ({ src, alt, buttonText, sizeClass }) => (
     <div className="relative overflow-hidden rounded-xl shadow-lg h-[400px] bg-white group">
@@ -32,10 +36,10 @@ const ImageCard = ({ src, alt, buttonText, sizeClass }) => (
 
 const EditorsPicks = () => {
     const images = [
-        { src: 'src/images/Erkek-kategori.jpe', alt: 'Şık ve rahat erkek giyim koleksiyonu', buttonText: 'Erkek', sizeClass: 'w-[510px] h-[500px]' },
-        { src: 'src/images/Kadın-Kategori.jpg', alt: 'Trend ve zarif kadın giyim koleksiyonu', buttonText: 'Kadın', sizeClass: 'w-[240px] h-[500px]' },
-        { src: 'src/images/Çocuk kategori.jpe', alt: 'Sevimli ve dayanıklı çocuk giyim koleksiyonu', buttonText: 'Çocuk', sizeClass: 'w-[240px] h-[242px]' },
-        { src: 'src/images/Aksesuar-kategori.jpg', alt: 'Stilinizi tamamlayacak aksesuarlar', buttonText: 'Aksesuarlar', sizeClass: 'w-[240px] h-[242px]' }
+        { src: erkekKategori, alt: 'Şık ve rahat erkek giyim koleksiyonu', buttonText: 'Erkek', sizeClass: 'w-[510px] h-[500px]' },
+        { src: kadınKategori, alt: 'Trend ve zarif kadın giyim koleksiyonu', buttonText: 'Kadın', sizeClass: 'w-[240px] h-[500px]' },
+        { src: çocukKategori, alt: 'Sevimli ve dayanıklı çocuk giyim koleksiyonu', buttonText: 'Çocuk', sizeClass: 'w-[240px] h-[242px]' },
+        { src: aksesuarKategori, alt: 'Stilinizi tamamlayacak aksesuarlar', buttonText: 'Aksesuarlar', sizeClass: 'w-[240px] h-[242px]' }
     ];
 
     return (
