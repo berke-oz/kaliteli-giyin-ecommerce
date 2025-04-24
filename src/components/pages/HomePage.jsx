@@ -1,6 +1,5 @@
 
 import EditorsPicks from "../HomePageComponents/EditorsPicks";
-import FeaturedProduct from "../HomePageComponents/FeaturedProduct";
 import HomeBanner from "../HomePageComponents/HomeBanner";
 import TrustBadges from "../HomePageComponents/TrustBadges";
 import Layout from "../layout/Layout";
