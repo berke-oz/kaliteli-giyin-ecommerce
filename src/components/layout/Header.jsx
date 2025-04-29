@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Heart,
     Menu,
@@ -14,10 +14,11 @@ import { logoutUser } from "../../actions/clientActions";
 import { fetchCategories } from "../../actions/categoryActions";
 import CategoryList from "../CategoryList";
 import CartDropdown from '../CartDropdown';
-import Logo from '../../images/Green-Modern-Marketing-Logo.png';
+
 
 const Header = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = useSelector((state) => state.client.user);
     const cartItems = useSelector(state => state.cart.items);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -93,15 +94,18 @@ const Header = () => {
                                         <Link to="/shop" className="py-2 text-lg font-medium hover:text-gray-600">
                                             Shop
                                         </Link>
-                                        <Link to="/about" className="py-2 text-lg font-medium hover:text-gray-600">
+                                        <button
+                                            onClick={() => navigate("/")}
+                                            className="py-2 text-lg font-medium hover:text-gray-600 text-left"
+                                        >
                                             About
-                                        </Link>
-                                        <Link to="/blog" className="py-2 text-lg font-medium hover:text-gray-600">
-                                            Blog
-                                        </Link>
-                                        <Link to="/contact" className="py-2 text-lg font-medium hover:text-gray-600">
+                                        </button>
+                                        <button
+                                            onClick={() => navigate("/")}
+                                            className="py-2 text-lg font-medium hover:text-gray-600 text-left"
+                                        >
                                             Contact
-                                        </Link>
+                                        </button>
                                     </nav>
 
                                     <div className="mt-auto border-t p-4">
@@ -152,15 +156,18 @@ const Header = () => {
                                 <CategoryList />
                             </div>
                         </div>
-                        <Link to="/about" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                        <button
+                            onClick={() => navigate("/")}
+                            className="text-sm font-medium hover:text-gray-600 transition-colors"
+                        >
                             About
-                        </Link>
-                        <Link to="/blog" className="text-sm font-medium hover:text-gray-600 transition-colors">
-                            Blog
-                        </Link>
-                        <Link to="/contact" className="text-sm font-medium hover:text-gray-600 transition-colors">
+                        </button>
+                        <button
+                            onClick={() => navigate("/")}
+                            className="text-sm font-medium hover:text-gray-600 transition-colors"
+                        >
                             Contact
-                        </Link>
+                        </button>
                     </nav>
 
                     {/* Right Section */}
@@ -187,13 +194,7 @@ const Header = () => {
                             </Link>
                         )}
 
-                        <Link to="/wishlist" className="relative">
-                            <Heart className="h-5 w-5" />
-                            <span className="sr-only">Favoriler</span>
-                            <span className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center bg-black text-white text-[10px] rounded-full">
-                                1
-                            </span>
-                        </Link>
+
 
                         <div className="relative mt-[4px]">
                             <button
